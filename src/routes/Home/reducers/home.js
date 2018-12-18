@@ -116,6 +116,7 @@ export const removeTopping = (index, toppings, newPrice) => ({ type: REMOVE_TOPP
 // Thunks (Async Actions)
 // ------------------------------------
 export function fetchPizzaData() {
+  
   return (dispatch, getState) => {
     const query = /* GraphQL */ `{
       pizzaSizes {

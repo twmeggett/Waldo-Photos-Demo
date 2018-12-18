@@ -46,7 +46,9 @@ export default {
       toppings: 'Toppings',
       price: 'Price',
       stepOne: 'First, Please Select A Size',
-      stepTwo: 'Now, Select Your Toppings'
+      stepTwo: 'Now, Select Your Toppings',
+      maxToppingsTitle: 'Sorry Dude',
+      maxToppingsMsg: 'You\'ve Reached Maximum Capacity For This Pizza Size',
     },
   },
   // Surveys Page

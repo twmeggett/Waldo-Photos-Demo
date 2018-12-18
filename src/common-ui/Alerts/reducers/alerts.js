@@ -11,27 +11,29 @@ const TURN_OFF_ALERTS = 'common-ui/alerts/reducers/alerts/TURN_OFF_ALERTS';
 // Reducer
 // ------------------------------------
 const initialState = {
-  showInfo: false,
   showError: false,
+  showInfo: false,
   showUpdate: false,
   showLockedOut: false,
   showFileUploader: false,
+  title: '',
   alertMsg: '',
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case SHOW_INFO_ALERT:
-      return {
-        ...initialState,
-        showInfo: true,
-        alertMsg: action.msg,
-      };
     case SHOW_ERROR_ALERT:
       return {
         ...initialState,
         showError: true,
         alertMsg: action.errorMsg,
+      };
+    case SHOW_INFO_ALERT:
+      return {
+        ...initialState,
+        showInfo: true,
+        title: action.title,
+        alertMsg: action.msg,
       };
     case SHOW_UPDATE_ALERT:
       return {
@@ -57,8 +59,8 @@ const reducer = (state = initialState, action) => {
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const showInfoAlert = msg => ({ type: SHOW_INFO_ALERT, msg });
 export const showErrorAlert = errorMsg => ({ type: SHOW_ERROR_ALERT, errorMsg });
+export const showInfoAlert = (title, msg) => ({ type: SHOW_INFO_ALERT, title, msg });
 export const showUpdateAlert = () => ({ type: SHOW_UPDATE_ALERT });
 export const showPermissionsAlert = () => ({ type: SHOW_PERMISSIONS_ALERT });
 export const showFileUploader = () => ({ type: SHOW_FILE_UPLOADER });

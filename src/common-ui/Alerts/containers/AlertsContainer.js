@@ -4,11 +4,12 @@ import { turnOffAlerts } from '../reducers/alerts';
 
 const mapStateToProps = state => {
   return {
-    showInfo: state.alerts.showInfo,
     showError: state.alerts.showError,
+    showInfo: state.alerts.showInfo,
     showUpdate: state.alerts.showUpdate,
     showLockedOut: state.alerts.showLockedOut,
     showFileUploader: state.alerts.showFileUploader,
+    title: state.alerts.title,
     alertMsg: state.alerts.alertMsg,
   };
 };
