@@ -76,9 +76,10 @@ export default function pizzasReducer(state = initialState, action) {
     case ADD_TOPPING:
       return {
         ...state,
+        total: state.total - state.pizzas[action.index].price + action.newPrice,
         pizzas: state.pizzas.map((pizza, index) => {
           if (index === action.index && !pizza.toppings.includes(action.topping.name)) {
-            return { ...pizza, toppings: [ ...pizza.topings, action.topping ], price: action.price }
+            return { ...pizza, toppings: [ ...pizza.topings, action.topping ], price: action.newPrice }
           }
 
           return pizza;
@@ -116,7 +117,7 @@ export const removeTopping = (index, toppings, newPrice) => ({ type: REMOVE_TOPP
 // Thunks (Async Actions)
 // ------------------------------------
 export function fetchPizzaData() {
-  
+
   return (dispatch, getState) => {
     const query = /* GraphQL */ `{
       pizzaSizes {
