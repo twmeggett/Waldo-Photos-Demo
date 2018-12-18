@@ -10,8 +10,11 @@ class PizzaForm extends React.Component {
   static propTypes = {
     data: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
+    total: PropTypes.number.isRequired,
     pizzas: PropTypes.array.isRequired,
     addPizza: PropTypes.func.isRequired,
+    removePizza: PropTypes.func.isRequired,
+    removeTopping: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -22,19 +25,30 @@ class PizzaForm extends React.Component {
         pizzaSize: '',
         toppings: [],
       },
-      total: 0,
     };
+    this.getPrice = this.getPrice.bind(this);
     this.updateFormValues = this.updateFormValues.bind(this);
     this.handleSizeChange = this.handleSizeChange.bind(this);
     this.handleAddPizza = this.handleAddPizza.bind(this);
     this.handleToppingChange = this.handleToppingChange.bind(this);
     this.removePizza = this.removePizza.bind(this);
+    this.removeTopping = this.removeTopping.bind(this);
   }
 
   componentDidMount() {
     if (!this.props.initialized && !this.props.isFetching) {
       this.props.fetchPizzaData();
     }
+  }
+
+  getPrice(pizzaName, toppings) {
+    const pizzaSizeDeets = this.props.data.find(pizzaSize => pizzaSize.name === pizzaName);
+    const toppingPrices = toppings.map(topping => {
+      const toppingDeets = pizzaSizeDeets.toppings.find(top => top.topping.name === topping);
+      return toppingDeets.topping.price;
+    });
+
+    return toppings.length > 0 ? toppingPrices.reduce((total, num) => total + num) + pizzaSizeDeets.basePrice : pizzaSizeDeets.basePrice;
   }
 
   updateFormValues(field, value) {
@@ -57,34 +71,33 @@ class PizzaForm extends React.Component {
   }
 
   handleAddPizza() {
-    let pizzaPrice = 0;
-    const pizzaSizeDeets = this.props.data.find(pizza => pizza.name === this.state.pizzaSizeDeets.name);
-    const toppingPrices = this.state.formValues.toppings.map(topping => {
-      const toppingDeets = pizzaSizeDeets.toppings.find(top => top.topping.name === topping);
-      return toppingDeets.topping.price;
-    });
-
-    pizzaPrice = this.state.formValues.toppings.length > 0 ? toppingPrices.reduce((total, num) => total + num) + pizzaSizeDeets.basePrice : pizzaSizeDeets.basePrice;
+    let pizzaPrice = this.getPrice(this.state.pizzaSizeDeets.name, this.state.formValues.toppings);
 
     this.props.addPizza({
       pizzaSize: this.state.formValues.pizzaSize,
       toppings: this.state.formValues.toppings || [],
       price: pizzaPrice,
     });
-    this.setState({ total: this.state.total + pizzaPrice});
   }
 
   handleToppingChange(toppingName) {
     const maxToppingsReached = this.state.pizzaSizeDeets.maxToppings ? this.state.formValues.toppings.length >= this.state.pizzaSizeDeets.maxToppings : false;
-    const checked = this.state.formValues.toppings.find(topping => topping === toppingName) ? true : false;
+    const checked = this.state.formValues.toppings.includes(toppingName);
     const value = checked ? this.state.formValues.toppings.filter(topping => topping !== toppingName) : !maxToppingsReached ? [ ...this.state.formValues.toppings, toppingName ] : this.state.formValues.toppings;
     
     this.updateFormValues('toppings', value);
   }
 
   removePizza(index) {
-    this.setState({ total: this.state.total - this.props.pizzas[index].price});
     this.props.removePizza(index);
+  }
+
+  removeTopping(index, toppingName) {
+    const selectedPizza = this.props.pizzas[index];
+    const newToppings = selectedPizza.toppings.filter(topping => topping !== toppingName);
+    const newPrice = this.getPrice(selectedPizza.pizzaSize, newToppings);
+
+    this.props.removeTopping(index, newToppings, newPrice);
   }
 
   render() {
@@ -94,12 +107,19 @@ class PizzaForm extends React.Component {
         accessor: 'pizzaSize',
         Cell: row => (
           <span>
-            <p className="link">{ row.value } <i className="far fa-times-circle" style={{  marginLeft: '10px', color: 'red' }} onClick={ () => {
+            <p className="link">{ row.value } <i className="far fa-times-circle" style={{ color: 'red' }} onClick={ () => {
               this.removePizza(row.index)
             }}></i></p>
           </span>
         ),
         minWidth: 20,
+        Footer: data => {
+          return (
+            <b>
+              Total:
+            </b>
+            )
+        }
       },
       {
         Header: getDict('home.form.toppings'),
@@ -107,7 +127,9 @@ class PizzaForm extends React.Component {
         Cell: row => (
           <span>
             <p>{ row.value.map((topping, index) => (
-              <span key={'diplayToppingTable' + index}>{topping} </span>
+              <span key={'diplayToppingTable' + index}>{topping} <i className="far fa-times-circle" style={{  marginRight: '10px', color: 'red' }} onClick={ () => {
+                this.removeTopping(row.index, topping);
+              }}></i></span>
             )) }</p>
           </span>
         ),
@@ -126,7 +148,7 @@ class PizzaForm extends React.Component {
         Footer: data => {
           return (
             <span>
-              {usDollarFormatter(this.state.total)}
+              {usDollarFormatter(this.props.total)}
             </span>
             )
         }

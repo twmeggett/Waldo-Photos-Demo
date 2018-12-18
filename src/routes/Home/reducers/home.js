@@ -29,6 +29,7 @@ const initialState = {
   isFetching: false,
   initialized: false,
   pizzas: [],
+  total: 0,
 };
 
 export default function pizzasReducer(state = initialState, action) {
@@ -64,18 +65,20 @@ export default function pizzasReducer(state = initialState, action) {
       return {
         ...state,
         pizzas: [ ...state.pizzas, action.data ],
+        total: state.total + action.data.price,
       }
     case REMOVE_PIZZA:
       return {
         ...state,
-        pizzas: state.pizzas.filter((pizza, index) => index !== action.index)
+        pizzas: state.pizzas.filter((pizza, index) => index !== action.index),
+        total: state.total - state.pizzas[action.index].price,
       }
     case ADD_TOPPING:
       return {
         ...state,
         pizzas: state.pizzas.map((pizza, index) => {
-          if (index === action.index && !pizza.toppings.find(topping => topping.name === action.topping.name)) {
-            return { ...pizza, toppings: [ ...pizza.topings, action.topping ] }
+          if (index === action.index && !pizza.toppings.includes(action.topping.name)) {
+            return { ...pizza, toppings: [ ...pizza.topings, action.topping ], price: action.price }
           }
 
           return pizza;
@@ -84,9 +87,10 @@ export default function pizzasReducer(state = initialState, action) {
     case REMOVE_TOPPING:
       return {
         ...state,
+        total: state.total - state.pizzas[action.index].price + action.newPrice,
         pizzas: state.pizzas.map((pizza, index) => {
           if (index === action.index) {
-            return { ...pizza, toppings: pizza.toppings.filter(topping => topping.name !== action.topping.name) };
+            return { ...pizza, toppings: action.toppings, price: action.newPrice };
           }
 
           return pizza;
@@ -106,6 +110,7 @@ export const load = data => ({ type: LOAD_DATA, data });
 export const clearData = () => ({ type: CLEAR_DATA });
 export const addPizza = data => ({ type: ADD_PIZZA, data });
 export const removePizza = index => ({ type: REMOVE_PIZZA, index });
+export const removeTopping = (index, toppings, newPrice) => ({ type: REMOVE_TOPPING, index, toppings, newPrice });
 
 // ------------------------------------
 // Thunks (Async Actions)

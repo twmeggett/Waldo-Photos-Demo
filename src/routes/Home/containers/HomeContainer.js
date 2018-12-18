@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { fetchPizzaData, addPizza, removePizza } from '../reducers/home'
+import { fetchPizzaData, addPizza, removePizza, removeTopping } from '../reducers/home'
 import HomeView from '../components/HomeView';
 
 const mapStateToProps = state => ({
@@ -7,6 +7,7 @@ const mapStateToProps = state => ({
   isFetching: state.home.isFetching,
   initialized: state.home.initialized,
   pizzas: state.home.pizzas,
+  total: state.home.total,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -19,6 +20,9 @@ const mapDispatchToProps = dispatch => ({
   removePizza: (index) => {
     dispatch(removePizza(index));
   },
+  removeTopping: (index, toppings, newPrice) => {
+    dispatch(removeTopping(index, toppings, newPrice))
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeView);
