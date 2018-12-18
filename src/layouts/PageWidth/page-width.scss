@@ -1,0 +1,57 @@
+.header-width, .page-width {
+	position: relative;
+	margin: 2em auto;
+}
+
+@media (max-width: 576px) { 
+	.header-width, .page-width {
+		width: 100%;
+	}
+}
+
+@media only screen and (min-width: 576px) and (max-width: 768px) {
+	.header-width {
+		width: 98%;
+	}
+
+	.page-width {
+		width: 95%;
+	}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+	.header-width {
+		width: 92%;
+	}
+
+	.page-width {
+		width: 90%;
+	}
+}
+
+@media (min-width: 992px) {
+	.header-width {
+		width: 82%;
+	}
+
+	.page-width {
+		width: 80%;
+	}
+}
+
+/*
+
+$grid-breakpoints: (
+  // Extra small screen / phone
+  xs: 0,
+  // Small screen / phone
+  sm: 576px,
+  // Medium screen / tablet
+  md: 768px,
+  // Large screen / desktop
+  lg: 992px,
+  // Extra large screen / wide desktop
+  xl: 1200px
+);
+
+*/

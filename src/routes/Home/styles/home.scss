@@ -1,0 +1,15 @@
+#home {
+	.description {
+		text-indent: 50px;
+	}
+	.windowsImage {
+	  	display: block;
+	  	height: 600px;
+	  	margin: 0 auto;
+	  	-webkit-transform: rotate(90deg);     /* Chrome and other webkit browsers */
+	  	-moz-transform: rotate(90deg);        /* FF */
+	  	-o-transform: rotate(90deg);          /* Opera */
+	  	-ms-transform: rotate(90deg);         /* IE9 */
+	  	transform: rotate(90deg);             /* W3C compliant browsers */
+	}
+}

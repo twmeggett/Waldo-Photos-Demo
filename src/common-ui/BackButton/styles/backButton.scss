@@ -1,0 +1,30 @@
+@import "../../../styles/base.scss";
+
+
+.backButton {
+	margin-bottom: 10px;
+}
+
+@media (max-width: 576px) { 
+	.backButton {
+
+	}
+}
+
+@media only screen and (min-width: 576px) and (max-width: 768px) {
+	.backButton {
+
+	}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+	.backButton {
+
+	}
+}
+
+@media (min-width: 992px) {
+	.backButton {
+
+	}
+}
