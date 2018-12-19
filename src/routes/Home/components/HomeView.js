@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Formik } from 'formik';
 import PizzaForm from './PizzaForm';
 import PageWidth from '../../../layouts/PageWidth';
 import { getDict } from '../../../common-ui/I18n';

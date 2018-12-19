@@ -4,7 +4,14 @@ import Select from '../../../common-ui/Select';
 import Table from '../../../common-ui/Table';
 import { getDict } from '../../../common-ui/I18n';
 import { usDollarFormatter } from '../../../util/formatMoney';
-import '../styles/home.scss';
+
+const defaultState = {
+  pizzaSizeDeets: {},
+  formValues: {
+    pizzaSize: '',
+    toppings: [],
+  },
+}
 
 class PizzaForm extends React.Component {
   static propTypes = {
@@ -20,13 +27,7 @@ class PizzaForm extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      pizzaSizeDeets: {},
-      formValues: {
-        pizzaSize: '',
-        toppings: [],
-      },
-    };
+    this.state = defaultState;
     this.getPrice = this.getPrice.bind(this);
     this.updateFormValues = this.updateFormValues.bind(this);
     this.handleSizeChange = this.handleSizeChange.bind(this);
@@ -59,6 +60,7 @@ class PizzaForm extends React.Component {
       ...this.state,
       pizzaSizeDeets,
       formValues: {
+        ...this.state.formValues,
         pizzaSize: pizzaSize.value,
         toppings: defaultToppings,
       }
@@ -160,10 +162,10 @@ class PizzaForm extends React.Component {
           options={this.props.data.map(size => ({ value: size.name, label: `${size.name} - ${usDollarFormatter(size.basePrice)}` }))}
           onChange={this.handleSizeChange}
         />
-        <hr />
         {
           this.state.formValues.pizzaSize && this.state.pizzaSizeDeets.toppings ? (
             <div>
+              <hr />
               <b>{getDict('home.form.stepTwo')}</b>
               {this.state.pizzaSizeDeets.toppings.map((topping, index) => (
                 <div className="form-group form-check" onClick={ () => this.handleToppingChange(topping.topping.name) } key={'topping-' + topping.topping.name}>
@@ -181,12 +183,15 @@ class PizzaForm extends React.Component {
         <button onClick={() => { this.handleAddPizza() }} disabled={!this.state.pizzaSizeDeets.name}>
           {getDict('home.form.submit')}
         </button>
-        <hr />
-        <Table
-          data={this.props.pizzas || []}
-          columns={columns}
-          isFetching={this.props.isFetching}
-        />
+        <div>
+          <hr />
+          <Table
+            data={this.props.pizzas || []}
+            columns={columns}
+            isFetching={this.props.isFetching}
+            showPagination={false}
+          />
+        </div>
       </div>
     );
   }
