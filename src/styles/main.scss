@@ -21,6 +21,14 @@ body {
 
 h1 {
   color: $primary-color;
+
+}
+@media (max-width: 576px) { 
+  h1 {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 20px;
+  }
 }
 
 a {

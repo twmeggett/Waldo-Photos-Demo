@@ -164,7 +164,7 @@ class PizzaForm extends React.Component {
         />
         {
           this.state.formValues.pizzaSize && this.state.pizzaSizeDeets.toppings ? (
-            <div>
+            <div className="topping">
               <hr />
               <b>{getDict('home.form.stepTwo')}</b>
               <span className={this.state.pizzaSizeDeets.maxToppings ? '' : 'hide'}>
