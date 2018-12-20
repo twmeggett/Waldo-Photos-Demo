@@ -167,6 +167,13 @@ class PizzaForm extends React.Component {
             <div>
               <hr />
               <b>{getDict('home.form.stepTwo')}</b>
+              <span className={this.state.pizzaSizeDeets.maxToppings ? '' : 'hide'}>
+                <small style={{ fontStyle: 'italic' }}> {this.state.pizzaSizeDeets.maxToppings - this.state.formValues.toppings.length} {getDict('home.form.toppingsLeft')}</small>
+              </span>
+              <span className={this.state.pizzaSizeDeets.maxToppings ? 'hide' : ''}>
+                <small style={{ fontStyle: 'italic' }}> {getDict('home.form.alltheToppings')}</small>
+              </span>
+
               {this.state.pizzaSizeDeets.toppings.map((topping, index) => {
                 const toppingSelected = this.state.formValues.toppings.find(top => top === topping.topping.name);
 

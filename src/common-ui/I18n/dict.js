@@ -50,6 +50,8 @@ export default {
       maxToppingsTitle: 'That\'s all Dude',
       maxToppingsMsg: 'You\'ve Reached Maximum Capacity For This Pizza Size',
       defaultTopping: 'default topping for this pizza size',
+      toppingsLeft: 'toppings left',
+      alltheToppings: 'have all the toppings!',
     },
   },
   // Surveys Page
