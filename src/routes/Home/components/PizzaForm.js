@@ -11,7 +11,7 @@ const defaultState = {
     pizzaSize: '',
     toppings: [],
   },
-}
+};
 
 class PizzaForm extends React.Component {
   static propTypes = {
@@ -54,7 +54,7 @@ class PizzaForm extends React.Component {
 
   handleSizeChange(pizzaSize) {
     const pizzaSizeDeets = this.props.data.find(pizza => pizza.name === pizzaSize.value);
-    const defaultToppings = pizzaSizeDeets.toppings.filter(topping => topping.defaultSelected).map(top => top.topping.name)
+    const defaultToppings = pizzaSizeDeets.toppings.filter(topping => topping.defaultSelected).map(top => top.topping.name);
 
     this.setState({
       ...this.state,
@@ -63,7 +63,7 @@ class PizzaForm extends React.Component {
         ...this.state.formValues,
         pizzaSize: pizzaSize.value,
         toppings: defaultToppings,
-      }
+      },
     });
   }
 
@@ -81,7 +81,7 @@ class PizzaForm extends React.Component {
     const maxToppingsReached = this.state.pizzaSizeDeets.maxToppings ? this.state.formValues.toppings.length >= this.state.pizzaSizeDeets.maxToppings : false;
     const checked = this.state.formValues.toppings.includes(toppingName);
     const value = checked ? this.state.formValues.toppings.filter(topping => topping !== toppingName) : !maxToppingsReached ? [ ...this.state.formValues.toppings, toppingName ] : this.state.formValues.toppings;
-    
+
     if (this.state.formValues.toppings.length === this.state.pizzaSizeDeets.maxToppings - 1) {
       this.props.showInfoAlert(getDict('home.form.maxToppingsTitle'), getDict('home.form.maxToppingsMsg'));
     }
@@ -107,9 +107,9 @@ class PizzaForm extends React.Component {
         accessor: 'pizzaSize',
         Cell: row => (
           <span>
-            <p className="link">{ row.value } <i className="far fa-times-circle" style={{ color: 'red' }} onClick={ () => {
-              this.removePizza(row.index)
-            }}></i></p>
+            <p className="link">{ row.value } <i className="far fa-times-circle" style={{ color: 'red' }} onClick={() => {
+              this.removePizza(row.index);
+            }} /></p>
           </span>
         ),
         minWidth: 20,
@@ -118,8 +118,8 @@ class PizzaForm extends React.Component {
             <b>
               Total:
             </b>
-            )
-        }
+          );
+        },
       },
       {
         Header: getDict('home.form.toppings'),
@@ -127,9 +127,9 @@ class PizzaForm extends React.Component {
         Cell: row => (
           <span>
             <p>{ row.value.map((topping, index) => (
-              <span key={'diplayToppingTable' + index}>{topping} <i className="far fa-times-circle" style={{  marginRight: '10px', color: 'red' }} onClick={ () => {
+              <span key={'diplayToppingTable' + index}>{topping} <i className="far fa-times-circle" style={{ marginRight: '10px', color: 'red' }} onClick={() => {
                 this.removeTopping(row.index, topping);
-              }}></i></span>
+              }} /></span>
             )) }</p>
           </span>
         ),
@@ -142,7 +142,7 @@ class PizzaForm extends React.Component {
             <span>
               <p>{ usDollarFormatter(row.value) }</p>
             </span>
-          )
+          );
         },
         minWidth: 15,
         Footer: data => {
@@ -150,8 +150,8 @@ class PizzaForm extends React.Component {
             <span>
               {usDollarFormatter(this.props.total)}
             </span>
-            )
-        }
+          );
+        },
       },
     ];
 
@@ -167,20 +167,24 @@ class PizzaForm extends React.Component {
             <div>
               <hr />
               <b>{getDict('home.form.stepTwo')}</b>
-              {this.state.pizzaSizeDeets.toppings.map((topping, index) => (
-                <div className="form-group form-check" onClick={ () => this.handleToppingChange(topping.topping.name) } key={'topping-' + topping.topping.name}>
-                  <input
-                    type="checkbox"
-                    checked={this.state.formValues.toppings.find(top => top === topping.topping.name) ? true : false}
-                    disabled={!this.state.formValues.toppings.find(top => top === topping.topping.name) && ( this.state.pizzaSizeDeets.maxToppings ? this.state.formValues.toppings.length >= this.state.pizzaSizeDeets.maxToppings : false) ? true : false}
-                  />
-                  <label>{topping.topping.name} - {usDollarFormatter(topping.topping.price)}</label>
-                </div>
-              ))}
+              {this.state.pizzaSizeDeets.toppings.map((topping, index) => {
+                const toppingSelected = this.state.formValues.toppings.find(top => top === topping.topping.name);
+
+                return (
+                  <div className="form-group form-check" onClick={() => this.handleToppingChange(topping.topping.name)} key={'topping-' + topping.topping.name}>
+                    <input
+                      type="checkbox"
+                      checked={toppingSelected}
+                      disabled={!toppingSelected && this.state.pizzaSizeDeets.maxToppings && this.state.formValues.toppings.length >= this.state.pizzaSizeDeets.maxToppings}
+                    />
+                    <label>{topping.topping.name} - {usDollarFormatter(topping.topping.price)} <small style={{ fontStyle: 'italic' }}>{ topping.defaultSelected ? `- ${getDict('home.form.defaultTopping')}` : '' }</small></label>
+                  </div>
+                );
+              })}
             </div>
           ) : undefined
         }
-        <button onClick={() => { this.handleAddPizza() }} disabled={!this.state.pizzaSizeDeets.name}>
+        <button onClick={() => { this.handleAddPizza(); }} disabled={!this.state.pizzaSizeDeets.name}>
           {getDict('home.form.submit')}
         </button>
         <div>
