@@ -33,8 +33,8 @@ class HomeView extends React.Component {
     return (
       <div id="home">
         <PageWidth>
-        	<h1>{getDict('home.welcome')}</h1>
-        	<PizzaForm  {...this.props} />
+          <h1>{getDict('home.welcome')}</h1>
+          <PizzaForm {...this.props} />
         </PageWidth>
       </div>
     );

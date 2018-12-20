@@ -1,4 +1,4 @@
-import { request } from 'graphql-request'
+import { request } from 'graphql-request';
 import { showErrorAlert } from '../../../common-ui/Alerts/reducers/alerts';
 import { mapForLocal } from '../../../util/client-server-mappers';
 
@@ -66,25 +66,25 @@ export default function pizzasReducer(state = initialState, action) {
         ...state,
         pizzas: [ ...state.pizzas, action.data ],
         total: state.total + action.data.price,
-      }
+      };
     case REMOVE_PIZZA:
       return {
         ...state,
         pizzas: state.pizzas.filter((pizza, index) => index !== action.index),
         total: state.total - state.pizzas[action.index].price,
-      }
+      };
     case ADD_TOPPING:
       return {
         ...state,
         total: state.total - state.pizzas[action.index].price + action.newPrice,
         pizzas: state.pizzas.map((pizza, index) => {
           if (index === action.index && !pizza.toppings.includes(action.topping.name)) {
-            return { ...pizza, toppings: [ ...pizza.topings, action.topping ], price: action.newPrice }
+            return { ...pizza, toppings: [ ...pizza.topings, action.topping ], price: action.newPrice };
           }
 
           return pizza;
         }),
-      }
+      };
     case REMOVE_TOPPING:
       return {
         ...state,
@@ -96,7 +96,7 @@ export default function pizzasReducer(state = initialState, action) {
 
           return pizza;
         }),
-      }
+      };
     default:
       return state;
   }
@@ -117,7 +117,6 @@ export const removeTopping = (index, toppings, newPrice) => ({ type: REMOVE_TOPP
 // Thunks (Async Actions)
 // ------------------------------------
 export function fetchPizzaData() {
-
   return (dispatch, getState) => {
     const query = /* GraphQL */ `{
       pizzaSizes {
@@ -132,7 +131,7 @@ export function fetchPizzaData() {
           defaultSelected
         }
       }
-    }`
+    }`;
     const errorAlert = (msg) => {
       dispatch(doneFetching());
       dispatch(clearData());
@@ -142,8 +141,8 @@ export function fetchPizzaData() {
     dispatch(fetching());
     return request('http://core-graphql.dev.waldo.photos/pizza', query)
     .then(data => {
-      dispatch(load(data))
-      console.log(data)
-    }).catch(errorAlert)
+      dispatch(load(data));
+      console.log(data);
+    }).catch(errorAlert);
   };
 }
