@@ -35,6 +35,17 @@ a {
 	color: $primary-color;
 }
 
+button {
+  cursor: pointer;
+  
+  &[disabled] {
+    cursor: inherit;
+  }
+  &:focus {
+    outline: 0;
+  }
+}
+
 .link {
 	cursor: pointer;
 	color: $primary-color;
