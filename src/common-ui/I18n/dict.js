@@ -31,11 +31,6 @@ export default {
   nav: {
     back: 'Back',
     home: 'Home',
-    surveys: 'Surveys',
-    'user-info': 'User Info',
-    insights: 'Insights',
-    fileUpload: 'File Upload',
-    siteMap: 'Site Map',
   },
   // Home Page
   home: {
@@ -53,37 +48,5 @@ export default {
       toppingsLeft: 'toppings left',
       alltheToppings: 'have all the toppings!',
     },
-  },
-  // Surveys Page
-  surveys: {
-    title: 'Surveys Page',
-    techSurveys: 'Technician Surveys',
-    partsSurveys: 'Parts Surveys',
-  },
-  // Survey Info Page
-  surveyInfo: {
-    title: 'Survey Info',
-    table: {
-      name: 'Name',
-      amount: 'Amount',
-      lastUsed: 'Last Used',
-    },
-  },
-  // Insights Page
-  insights: {
-    title: 'Insights Page',
-  },
-  // File Upload Page
-  fileUpload: {
-    title: 'File Upload Page',
-    table: {
-      name: 'Name',
-      lastModified: 'Last Modified',
-      type: 'Type',
-    },
-  },
-  // Site Map Page
-  siteMap: {
-    title: 'Site Map Page',
   },
 };
