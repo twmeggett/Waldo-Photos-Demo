@@ -82,7 +82,7 @@ class PizzaForm extends React.Component {
     const checked = this.state.formValues.toppings.includes(toppingName);
     const value = checked ? this.state.formValues.toppings.filter(topping => topping !== toppingName) : !maxToppingsReached ? [ ...this.state.formValues.toppings, toppingName ] : this.state.formValues.toppings;
 
-    if (this.state.formValues.toppings.length === this.state.pizzaSizeDeets.maxToppings - 1) {
+    if (!checked && value.length >= this.state.pizzaSizeDeets.maxToppings) {
       this.props.showInfoAlert(getDict('home.form.maxToppingsTitle'), getDict('home.form.maxToppingsMsg'));
     }
     this.updateFormValues('toppings', value);
