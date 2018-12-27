@@ -12,6 +12,7 @@ class HomeView extends React.Component {
     isFetching: PropTypes.bool,
     initialized: PropTypes.bool,
     fetchPizzaData: PropTypes.func,
+    subTotal: PropTypes.number,
   }
 
   constructor(props) {

@@ -17,12 +17,12 @@ class PizzaForm extends React.Component {
   static propTypes = {
     data: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
-    total: PropTypes.number.isRequired,
     pizzas: PropTypes.array.isRequired,
     addPizza: PropTypes.func.isRequired,
     removePizza: PropTypes.func.isRequired,
     removeTopping: PropTypes.func.isRequired,
     showInfoAlert: PropTypes.func.isRequired,
+    subTotal: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -148,7 +148,7 @@ class PizzaForm extends React.Component {
         Footer: data => {
           return (
             <span>
-              {usDollarFormatter(this.props.total)}
+              {usDollarFormatter(this.props.subTotal)}
             </span>
           );
         },

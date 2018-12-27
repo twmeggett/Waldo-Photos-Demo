@@ -1,3 +1,4 @@
+import { createSelector } from 'reselect';
 import { request } from 'graphql-request';
 import { showErrorAlert } from '../../../common-ui/Alerts/reducers/alerts';
 import { mapForLocal } from '../../../util/client-server-mappers';
@@ -22,6 +23,22 @@ export const ADD_TOPPING    = path + 'ADD_TOPPING';
 export const REMOVE_TOPPING = path + 'REMOVE_TOPPING';
 
 // ------------------------------------
+// Selectors
+// ------------------------------------
+const getPizzas = (state, props) => state.home.pizzas;
+
+export const makeSubTotal = () => createSelector(
+  [ getPizzas ],
+  (pizzas) => {
+    let subTotal = 0;
+    if (pizzas.length > 0) {
+      subTotal = pizzas.map(pizza => pizza.price).reduce((total, num) => total + num);
+    }
+    return (subTotal);
+  },
+);
+
+// ------------------------------------
 // Reducer
 // ------------------------------------
 const initialState = {
@@ -29,7 +46,6 @@ const initialState = {
   isFetching: false,
   initialized: false,
   pizzas: [],
-  total: 0,
 };
 
 export default function pizzasReducer(state = initialState, action) {
@@ -65,18 +81,15 @@ export default function pizzasReducer(state = initialState, action) {
       return {
         ...state,
         pizzas: [ ...state.pizzas, action.data ],
-        total: state.total + action.data.price,
       };
     case REMOVE_PIZZA:
       return {
         ...state,
         pizzas: state.pizzas.filter((pizza, index) => index !== action.index),
-        total: state.total - state.pizzas[action.index].price,
       };
     case ADD_TOPPING:
       return {
         ...state,
-        total: state.total - state.pizzas[action.index].price + action.newPrice,
         pizzas: state.pizzas.map((pizza, index) => {
           if (index === action.index && !pizza.toppings.includes(action.topping.name)) {
             return { ...pizza, toppings: [ ...pizza.topings, action.topping ], price: action.newPrice };
@@ -88,7 +101,6 @@ export default function pizzasReducer(state = initialState, action) {
     case REMOVE_TOPPING:
       return {
         ...state,
-        total: state.total - state.pizzas[action.index].price + action.newPrice,
         pizzas: state.pizzas.map((pizza, index) => {
           if (index === action.index) {
             return { ...pizza, toppings: action.toppings, price: action.newPrice };
