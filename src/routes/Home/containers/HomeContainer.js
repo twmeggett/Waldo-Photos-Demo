@@ -1,15 +1,18 @@
 import { connect } from 'react-redux';
-import { fetchPizzaData, addPizza, removePizza, removeTopping } from '../reducers/home';
+import { fetchPizzaData, addPizza, removePizza, removeTopping, makeSubTotal } from '../reducers/home';
 import HomeView from '../components/HomeView';
 import { showInfoAlert } from '../../../common-ui/Alerts/reducers/alerts';
 
-const mapStateToProps = state => ({
-  data: state.home.data,
-  isFetching: state.home.isFetching,
-  initialized: state.home.initialized,
-  pizzas: state.home.pizzas,
-  total: state.home.total,
-});
+const makeMapStateToProps = () => {
+  const getSubTotal = makeSubTotal();
+  return (state, props) => ({
+    data: state.home.data,
+    isFetching: state.home.isFetching,
+    initialized: state.home.initialized,
+    pizzas: state.home.pizzas,
+    subTotal: getSubTotal(state),
+  });
+};
 
 const mapDispatchToProps = dispatch => ({
   fetchPizzaData: () => {
@@ -29,4 +32,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeView);
+export default connect(makeMapStateToProps, mapDispatchToProps)(HomeView);
