@@ -22,7 +22,7 @@ class PizzaForm extends React.Component {
     removePizza: PropTypes.func.isRequired,
     removeTopping: PropTypes.func.isRequired,
     showInfoAlert: PropTypes.func.isRequired,
-    subTotal: PropTypes.func.isRequired,
+    subTotal: PropTypes.number.isRequired,
   }
 
   constructor(props) {
